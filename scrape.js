@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const schedule = require('node-schedule');
 const mongoose = require('mongoose')
 require("dotenv").config()
-
+const port = process.env.PORT || 3131
 const mongoURI = process.env.MONGOURI
 const eldoDisc = process.env.ps5_eldo_disc
 const eldoDE = process.env.ps5_eldo_DE
@@ -139,6 +139,6 @@ schedule.scheduleJob("*/5 * * * *",(async function () {
 
 }))
 
-
+app.listen(port, () => console.log(`app listening on port ${port}!`))
 
 
