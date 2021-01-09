@@ -7,6 +7,8 @@ const mongoURI = process.env.MONGOURI
 const eldoDisc = process.env.ps5_eldo_disc
 const eldoDE = process.env.ps5_eldo_DE
 
+const express = require('express')
+const app = express()
 
 mongoose
     .connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -138,4 +140,7 @@ schedule.scheduleJob("*/5 * * * *",(async function () {
     newPsSchema.save().catch( err => console.log(err))
 
 }))
+
+app.listen(port, () => console.log(`app listening on port ${port}!`))
+
 
