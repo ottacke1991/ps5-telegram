@@ -40,6 +40,8 @@ let scrapeEldo = async () => {
     const page = await browser.newPage();
     await page.goto(eldoDisc);
     // click по выбору региона
+    await page.waitForSelector("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span")
+
     await page.click("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span")
     //выбор самара
     await page.waitForSelector("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(7)")
@@ -87,6 +89,7 @@ let scrapeEldoDE = async () => {
     const page = await browser.newPage();
     await page.goto(eldoDE);
     // click по выбору региона
+    await page.waitForSelector("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span")
     await page.click("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span")
     //выбор самара
     await page.waitForSelector("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(7)")
