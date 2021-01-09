@@ -49,7 +49,7 @@ let scrapeEldo = async () => {
 
     await page.goto(eldoDisc)
 
-    await page.screenshot({path: 'example.png'});
+    // await page.screenshot({path: 'example.png'});
 
 
     // // click по выбору региона
