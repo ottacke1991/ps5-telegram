@@ -20,15 +20,17 @@ mongoose
 
 
 const chromeOptions = {
-    headless: false,
-    //defaultViewport: null,
+    headless: true,
+    defaultViewport: null,
     args: [
         "--disable-notifications",
     //    "--incognito",
         "--no-sandbox",
-      //  '--disable-setuid-sandbox',
-        //"--single-process",
-        //"--no-zygote"
+        // '--proxy-server="direct://"',
+        // '--proxy-bypass-list=*'
+        '--disable-setuid-sandbox',
+       // "--single-process",
+        "--no-zygote",
     ],
 };
 
@@ -38,17 +40,29 @@ let scrapeEldo = async () => {
     // Включаем Puppeteer
     const browser = await puppeteer.launch(chromeOptions);
     const page = await browser.newPage();
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36')
-    await page.goto(eldoDisc);
-    // click по выбору региона
-    await page.waitForSelector("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span")
+    // await page.setDefaultNavigationTimeout(90000);
 
-    await page.click("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span")
-    //выбор самара
-    await page.waitForSelector("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(7)")
-    await page.click("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(7)")
-    //Ждем загрузку имени региона для добавления в обьект
-    await page.waitForSelector('.headerRegionName')
+    // await page.setExtraHTTPHeaders({
+    //     'Accept-Language': 'en-US,en;q=0.9'
+    // });
+     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36');
+
+    await page.goto(eldoDisc)
+
+    await page.screenshot({path: 'example.png'});
+
+
+    // // click по выбору региона
+    // await page.waitForSelector(".headerRegion gg").then(() => {
+    //     console.log('нашли еба')
+    // })
+    //
+    // await page.click(".headerRegion gg")
+    // //выбор самара
+    // await page.waitForSelector("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(7)")
+    // await page.click("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(7)")
+    // //Ждем загрузку имени региона для добавления в обьект
+    // await page.waitForSelector('.headerRegionName')
 
     // Код для скрапинга
     const result = await page.evaluate(async () => {
@@ -88,7 +102,10 @@ let scrapeEldoDE = async () => {
     // Включаем Puppeteer
     const browser = await puppeteer.launch(chromeOptions);
     const page = await browser.newPage();
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36')
+    await page.setExtraHTTPHeaders({
+        'Accept-Language': 'en-US,en;q=0.9'
+    });
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36');
     await page.goto(eldoDE);
     // click по выбору региона
     await page.waitForSelector("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span")
@@ -129,7 +146,7 @@ let scrapeEldoDE = async () => {
     return result
 };
 
-schedule.scheduleJob("*/1 * * * *",(async function () {
+schedule.scheduleJob("*/2 * * * *",(async function () {
     const psSchema = require('./schemas/psSchema')
 
     let resultObj ={}
