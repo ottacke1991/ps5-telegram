@@ -26,7 +26,7 @@ const chromeOptions = {
         "--disable-notifications",
     //    "--incognito",
         "--no-sandbox",
-        '--disable-setuid-sandbox',
+      //  '--disable-setuid-sandbox',
         //"--single-process",
         //"--no-zygote"
     ],
@@ -38,6 +38,7 @@ let scrapeEldo = async () => {
     // Включаем Puppeteer
     const browser = await puppeteer.launch(chromeOptions);
     const page = await browser.newPage();
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36')
     await page.goto(eldoDisc);
     // click по выбору региона
     await page.waitForSelector("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span")
@@ -87,6 +88,7 @@ let scrapeEldoDE = async () => {
     // Включаем Puppeteer
     const browser = await puppeteer.launch(chromeOptions);
     const page = await browser.newPage();
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36')
     await page.goto(eldoDE);
     // click по выбору региона
     await page.waitForSelector("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span")
@@ -127,7 +129,7 @@ let scrapeEldoDE = async () => {
     return result
 };
 
-schedule.scheduleJob("*/5 * * * *",(async function () {
+schedule.scheduleJob("*/1 * * * *",(async function () {
     const psSchema = require('./schemas/psSchema')
 
     let resultObj ={}
