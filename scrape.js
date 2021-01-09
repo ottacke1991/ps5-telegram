@@ -20,12 +20,13 @@ mongoose
 
 
 const chromeOptions = {
-    headless: false,
+    headless: true,
     //defaultViewport: null,
     args: [
         "--disable-notifications",
     //    "--incognito",
         "--no-sandbox",
+        '--disable-setuid-sandbox',
         //"--single-process",
         //"--no-zygote"
     ],
