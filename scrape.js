@@ -139,6 +139,3 @@ schedule.scheduleJob("*/5 * * * *",(async function () {
 
 }))
 
-app.listen(port, () => console.log(`app listening on port ${port}!`))
-
-
