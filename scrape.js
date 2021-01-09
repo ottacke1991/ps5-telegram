@@ -17,13 +17,23 @@ mongoose
 
 
 
-
+const chromeOptions = {
+    headless: false,
+    //defaultViewport: null,
+    args: [
+        "--disable-notifications",
+    //    "--incognito",
+        "--no-sandbox",
+        //"--single-process",
+        //"--no-zygote"
+    ],
+};
 
 let scrapeEldo = async () => {
     const moment = require('moment');
 
     // Включаем Puppeteer
-    const browser = await puppeteer.launch({headless: false});
+    const browser = await puppeteer.launch(chromeOptions);
     const page = await browser.newPage();
     await page.goto(eldoDisc);
     // click по выбору региона
@@ -70,7 +80,7 @@ let scrapeEldoDE = async () => {
     const moment = require('moment');
 
     // Включаем Puppeteer
-    const browser = await puppeteer.launch({headless: false});
+    const browser = await puppeteer.launch(chromeOptions);
     const page = await browser.newPage();
     await page.goto(eldoDE);
     // click по выбору региона
