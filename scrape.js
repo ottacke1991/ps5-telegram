@@ -93,7 +93,7 @@ let scrapeEldoDE = async () => {
     //Ждем загрузку имени региона для добавления в обьект
     await page.waitForSelector('.headerRegionName')
 
-    // Код для скрапинга
+    // Код для скраппинга
     const result = await page.evaluate(async () => {
         let newCheckObj = {}
 
