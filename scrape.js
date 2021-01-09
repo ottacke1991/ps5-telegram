@@ -108,13 +108,13 @@ let scrapeEldoDE = async () => {
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36');
     await page.goto(eldoDE);
     // click по выбору региона
-    await page.waitForSelector("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span")
-    await page.click("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span")
-    //выбор самара
-    await page.waitForSelector("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(7)")
-    await page.click("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(7)")
-    //Ждем загрузку имени региона для добавления в обьект
-    await page.waitForSelector('.headerRegionName')
+    // await page.waitForSelector("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span")
+    // await page.click("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span")
+    // //выбор самара
+    // await page.waitForSelector("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(7)")
+    // await page.click("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(7)")
+    // //Ждем загрузку имени региона для добавления в обьект
+    // await page.waitForSelector('.headerRegionName')
 
     // Код для скраппинга
     const result = await page.evaluate(async () => {
@@ -146,7 +146,7 @@ let scrapeEldoDE = async () => {
     return result
 };
 
-schedule.scheduleJob("*/2 * * * *",(async function () {
+schedule.scheduleJob("*/5 * * * *",(async function () {
     const psSchema = require('./schemas/psSchema')
 
     let resultObj ={}
