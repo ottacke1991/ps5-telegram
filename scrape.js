@@ -31,7 +31,7 @@ const chromeOptions = {
        // '--disable-http2',
     //    "--incognito",
         "--no-sandbox",
-       // '--proxy-server=188.247.39.14:43032',
+        '--proxy-server=http://91.215.87.193:8000',
        // '--proxy-server="direct://"',
      //   '--proxy-bypass-list=*',
         '--disable-setuid-sandbox',
@@ -92,15 +92,19 @@ let scrapeEldo = async () => {
     const moment = require('moment');
     // Включаем Puppeteer
     const browser = await puppeteer.launch(chromeOptions);
-    const page = await browser.newPage();
 
+    const page = await browser.newPage();
+    await page.authenticate({
+        username: 'MxWwwE',
+        password: 'yQv9EQ',
+    });
     await page.setExtraHTTPHeaders({
         'Accept-Language': 'ru-RU,ru;q=0.9'
     });
     //await page.setUserAgent("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)");
     await page.setUserAgent('Mozilla/5.0 (Linux; arm; Android 9; JAT-LX1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 YaBrowser/20.4.4.76.00 SA/1 Mobile Safari/537.36');
     await page.setViewport({ width: 800, height: 600 })
-    await page.goto('https://www.eldorado.ru')
+    await page.goto('https://www.eldorado.ru',  {waitUntil: 'domcontentloaded'});
    // click по выбору региона
     await page.waitForSelector("#__next > div > header > div.sc-14qfeqq-0.bNgeeI > div > div.h8xlw5-0.cddYaE > a").then(() => {
         console.log('city name found')
