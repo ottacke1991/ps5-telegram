@@ -31,6 +31,7 @@ const chromeOptions = {
        // '--disable-http2',
     //    "--incognito",
         "--no-sandbox",
+        '--proxy-server=188.126.45.161:4153',
        // '--proxy-server="direct://"',
      //   '--proxy-bypass-list=*',
         '--disable-setuid-sandbox',
@@ -51,7 +52,7 @@ let scrapeEldo = async () => {
     // //await page.setUserAgent("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)");
     await page.setUserAgent('Mozilla/5.0 (Linux; arm; Android 9; JAT-LX1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 YaBrowser/20.4.4.76.00 SA/1 Mobile Safari/537.36');
     await page.setViewport({ width: 800, height: 600 })
-    await page.goto('http://www.eldorado.ru')
+    await page.goto('https://www.eldorado.ru')
    // click по выбору региона
     await page.waitForSelector("#__next > div > header > div.sc-14qfeqq-0.bNgeeI > div > div.h8xlw5-0.cddYaE > a > span.h8xlw5-3.kLXpZr").then(() => {
         console.log('city name found')
