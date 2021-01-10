@@ -31,7 +31,7 @@ const chromeOptions = {
        // '--disable-http2',
     //    "--incognito",
         "--no-sandbox",
-        '--proxy-server=188.126.45.161:4153',
+       // '--proxy-server=188.247.39.14:43032',
        // '--proxy-server="direct://"',
      //   '--proxy-bypass-list=*',
         '--disable-setuid-sandbox',
@@ -39,6 +39,54 @@ const chromeOptions = {
         "--no-zygote",
     ],
 };
+
+
+
+
+
+let scrapePika = async () => {
+    const moment = require('moment');
+
+    // Включаем Puppeteer
+    const browser = await puppeteer.launch(chromeOptions);
+    const page = await browser.newPage();
+
+    await page.setExtraHTTPHeaders({
+        'Accept-Language': 'en-US,en;q=0.9'
+    });
+    // //await page.setUserAgent("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)");
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36');
+    await page.setViewport({ width: 800, height: 600 })
+    await page.goto('http://pikabu.ru',{ waitUntil: 'networkidle2' })
+    await page.waitForSelector(" body > div.app > header > div.header__main > div > div.header__wrapper > div.header__item.header__menu > div > div:nth-child(2) > a").then(() => {
+        console.log('city name found')
+
+    })
+
+
+
+    const result = await page.evaluate(async () => {
+
+        let html = document.querySelector('body > div.app > header > div.header__main > div > div.header__wrapper > div.header__item.header__menu > div > div:nth-child(2)').innerHTML
+
+        return html
+    })
+
+    console.log(result + 'innetHTML')
+    //  await page.screenshot({path: 'example.png'});
+
+
+    await browser.close();
+
+    // Работа с бд
+
+
+    return result
+};
+
+
+
+
 
 let scrapeEldo = async () => {
     const moment = require('moment');
@@ -49,12 +97,12 @@ let scrapeEldo = async () => {
     await page.setExtraHTTPHeaders({
         'Accept-Language': 'ru-RU,ru;q=0.9'
     });
-    // //await page.setUserAgent("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)");
+    //await page.setUserAgent("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)");
     await page.setUserAgent('Mozilla/5.0 (Linux; arm; Android 9; JAT-LX1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 YaBrowser/20.4.4.76.00 SA/1 Mobile Safari/537.36');
     await page.setViewport({ width: 800, height: 600 })
     await page.goto('https://www.eldorado.ru')
    // click по выбору региона
-    await page.waitForSelector("#__next > div > header > div.sc-14qfeqq-0.bNgeeI > div > div.h8xlw5-0.cddYaE > a > span.h8xlw5-3.kLXpZr").then(() => {
+    await page.waitForSelector("#__next > div > header > div.sc-14qfeqq-0.bNgeeI > div > div.h8xlw5-0.cddYaE > a").then(() => {
         console.log('city name found')
     })
 
@@ -62,7 +110,7 @@ let scrapeEldo = async () => {
 
     const result = await page.evaluate(async () => {
 
-        let html = document.querySelector('#__next > div > header > div.sc-14qfeqq-0.bNgeeI > div > div.h8xlw5-0.cddYaE > a > span.h8xlw5-3.kLXpZr').innerHTML
+        let html = document.querySelector('#__next > div > header > div.sc-14qfeqq-0.bNgeeI > div > div.h8xlw5-0.cddYaE > a').innerHTML
 
         return html
     })
@@ -176,6 +224,10 @@ schedule.scheduleJob("*/1 * * * *",(async function () {
     await scrapeEldo().then((value) => {
         resultObj.eldoDisc =value
     })
+
+    // await scrapePika().then((value) => {
+    //     resultObj.eldoDisc =value
+    // })
     // await scrapeEldoDE().then((value) => {
     //     resultObj.eldoDE =value
     // })
