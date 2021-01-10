@@ -24,11 +24,11 @@ const chromeOptions = {
     defaultViewport: null,
     args: [
         "--disable-notifications",
-        '--disable-http2',
+       // '--disable-http2',
     //    "--incognito",
         "--no-sandbox",
-        '--proxy-server="direct://"',
-        '--proxy-bypass-list=*',
+       // '--proxy-server="direct://"',
+     //   '--proxy-bypass-list=*',
         '--disable-setuid-sandbox',
        // "--single-process",
         "--no-zygote",
@@ -42,15 +42,15 @@ let scrapeEldo = async () => {
     const browser = await puppeteer.launch(chromeOptions);
     const page = await browser.newPage();
 
-    // await page.setExtraHTTPHeaders({
-    //     'Accept-Language': 'en-US,en;q=0.9'
-    // });
+    await page.setExtraHTTPHeaders({
+        'Accept-Language': 'en-US,en;q=0.9'
+    });
     //await page.setUserAgent("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)");
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36');
 
     await page.goto(eldoDisc)
 
-    // await page.screenshot({path: 'example.png'});
+   //  await page.screenshot({path: 'example.png'});
 
 
     // click по выбору региона
@@ -102,9 +102,9 @@ let scrapeEldoDE = async () => {
     // Включаем Puppeteer
     const browser = await puppeteer.launch(chromeOptions);
     const page = await browser.newPage();
-    // await page.setExtraHTTPHeaders({
-    //     'Accept-Language': 'en-US,en;q=0.9'
-    // });
+    await page.setExtraHTTPHeaders({
+        'Accept-Language': 'en-US,en;q=0.9'
+    });
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36');
     //await page.setUserAgent("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)");
 
