@@ -51,17 +51,17 @@ let scrapeEldo = async () => {
     // //await page.setUserAgent("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)");
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36');
     await page.setViewport({ width: 800, height: 600 })
-    await page.goto('https://pikabu.ru')
-    await page.waitForSelector(" body > div.app > header > div.header__main > div > div.header__wrapper > div.header__item.header__menu > div > div:nth-child(2) > a").then(() => {
+    await page.goto('https://www.eldorado.ru')
+   // click по выбору региона
+    await page.waitForSelector("#__next > div > header > div.sc-14qfeqq-0.bNgeeI > div > div.h8xlw5-0.cddYaE > a > span.h8xlw5-3.kLXpZr").then(() => {
         console.log('city name found')
-
     })
 
-    let html
+
 
     const result = await page.evaluate(async () => {
 
-    html = document.querySelector('body > div.app > header > div.header__main > div > div.header__wrapper > div.header__item.header__menu > div > div:nth-child(2)').innerHTML
+        let html = document.querySelector('#__next > div > header > div.sc-14qfeqq-0.bNgeeI > div > div.h8xlw5-0.cddYaE > a > span.h8xlw5-3.kLXpZr').innerHTML
 
         return html
     })
