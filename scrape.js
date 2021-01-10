@@ -24,10 +24,11 @@ const chromeOptions = {
     defaultViewport: null,
     args: [
         "--disable-notifications",
+        '--disable-http2',
     //    "--incognito",
         "--no-sandbox",
-        // '--proxy-server="direct://"',
-        // '--proxy-bypass-list=*'
+        '--proxy-server="direct://"',
+        '--proxy-bypass-list=*',
         '--disable-setuid-sandbox',
        // "--single-process",
         "--no-zygote",
@@ -149,7 +150,7 @@ let scrapeEldoDE = async () => {
     return result
 };
 
-schedule.scheduleJob("*/5 * * * *",(async function () {
+schedule.scheduleJob("*/1 * * * *",(async function () {
     const psSchema = require('./schemas/psSchema')
 
     let resultObj ={}
