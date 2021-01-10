@@ -25,7 +25,7 @@ mongoose
 
 const chromeOptions = {
     headless: true,
-    defaultViewport: null,
+    //defaultViewport: null,
     args: [
         "--disable-notifications",
        // '--disable-http2',
@@ -44,47 +44,6 @@ const chromeOptions = {
 
 
 
-let scrapePika = async () => {
-    const moment = require('moment');
-
-    // Включаем Puppeteer
-    const browser = await puppeteer.launch(chromeOptions);
-    const page = await browser.newPage();
-
-    await page.setExtraHTTPHeaders({
-        'Accept-Language': 'en-US,en;q=0.9'
-    });
-    // //await page.setUserAgent("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)");
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36');
-    await page.setViewport({ width: 800, height: 600 })
-    await page.goto('http://pikabu.ru',{ waitUntil: 'networkidle2' })
-    await page.waitForSelector(" body > div.app > header > div.header__main > div > div.header__wrapper > div.header__item.header__menu > div > div:nth-child(2) > a").then(() => {
-        console.log('city name found')
-
-    })
-
-
-
-    const result = await page.evaluate(async () => {
-
-        let html = document.querySelector('body > div.app > header > div.header__main > div > div.header__wrapper > div.header__item.header__menu > div > div:nth-child(2)').innerHTML
-
-        return html
-    })
-
-    console.log(result + 'innetHTML')
-    //  await page.screenshot({path: 'example.png'});
-
-
-    await browser.close();
-
-    // Работа с бд
-
-
-    return result
-};
-
-
 
 
 
@@ -101,63 +60,45 @@ let scrapeEldo = async () => {
     await page.setExtraHTTPHeaders({
         'Accept-Language': 'ru-RU,ru;q=0.9'
     });
-    //await page.setUserAgent("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)");
     await page.setUserAgent('Mozilla/5.0 (Linux; arm; Android 9; JAT-LX1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 YaBrowser/20.4.4.76.00 SA/1 Mobile Safari/537.36');
-    await page.setViewport({ width: 800, height: 600 })
-    await page.goto('https://www.eldorado.ru',  {waitUntil: 'domcontentloaded'});
+   // await page.setViewport({ width: 800, height: 600 })
+    await page.goto(eldoDisc);
    // click по выбору региона
-    await page.waitForSelector("#__next > div > header > div.sc-14qfeqq-0.bNgeeI > div > div.h8xlw5-0.cddYaE > a").then(() => {
+    await page.waitForSelector("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span").then(() => {
         console.log('city name found')
     })
 
+    await page.click("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span")
+    // //выбор самара
+    await page.waitForSelector("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(7)")
+    await page.click("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(7)")
+    // //Ждем загрузку имени региона для добавления в обьект
+    await page.waitForSelector('body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span')
+
+    // Код для скрапинга
+    const result = await page.evaluate(async (page) => {
+        let newCheckObj = {}
+
+        let addToBasket = document.querySelector('.gtmAddToBasket')
+        let city = document.querySelector('.headerRegionName').innerText
 
 
-    const result = await page.evaluate(async () => {
+        newCheckObj.shop = 'Эльдорадо'
+        newCheckObj.city = city
+        newCheckObj.psVersion = 'true'
 
-        let html = document.querySelector('#__next > div > header > div.sc-14qfeqq-0.bNgeeI > div > div.h8xlw5-0.cddYaE > a').innerHTML
+        if (addToBasket) {
+            newCheckObj.available  = true
+        } else {
+            newCheckObj.available  = false
+        }
 
-        return html
+        return newCheckObj
     })
 
-    console.log(result + 'innetHTML')
-   //  await page.screenshot({path: 'example.png'});
 
 
-    // click по выбору региона
-    // await page.waitForSelector("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span").then(() => {
-    //     console.log('city name found')
-    // })
-    // await page.click("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span")
-    // // //выбор самара
-    // await page.waitForSelector("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(7)")
-    // await page.click("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(7)")
-    // // //Ждем загрузку имени региона для добавления в обьект
-    // await page.waitForSelector('body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span')
-    //
-    // // Код для скрапинга
-    // const result = await page.evaluate(async (page) => {
-    //     let newCheckObj = {}
-    //
-    //     let addToBasket = document.querySelector('.gtmAddToBasket')
-    //     let city = document.querySelector('.headerRegionName').innerText
-    //
-    //
-    //     newCheckObj.shop = 'Эльдорадо'
-    //     newCheckObj.city = city
-    //     newCheckObj.psVersion = 'true'
-    //
-    //     if (addToBasket) {
-    //         newCheckObj.available  = true
-    //     } else {
-    //         newCheckObj.available  = false
-    //     }
-    //
-    //     return newCheckObj
-    // })
-    //
-    //
-    //
-    // result.curDate = moment().format('MMMM Do YYYY, h:mm:ss a')
+    result.curDate = moment().format('MMMM Do YYYY, h:mm:ss a')
     await browser.close();
 
     // Работа с бд
@@ -172,11 +113,7 @@ let scrapeEldoDE = async () => {
     // Включаем Puppeteer
     const browser = await puppeteer.launch(chromeOptions);
     const page = await browser.newPage();
-    // await page.setExtraHTTPHeaders({
-    //     'Accept-Language': 'en-US,en;q=0.9'
-    // });
-    // await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36');
-    //await page.setUserAgent("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)");
+
 
     await page.goto(eldoDE);
     // click по выбору региона
@@ -221,7 +158,7 @@ let scrapeEldoDE = async () => {
     return result
 };
 
-schedule.scheduleJob("*/1 * * * *",(async function () {
+schedule.scheduleJob("*/5 * * * *",(async function () {
     const psSchema = require('./schemas/psSchema')
 
     let resultObj ={}
@@ -236,10 +173,10 @@ schedule.scheduleJob("*/1 * * * *",(async function () {
     //     resultObj.eldoDE =value
     // })
 
-    // mongoose.connection.db.dropCollection('psshopstats', function(err, result) {});
-    // const newPsSchema = new psSchema
-    // newPsSchema.shopStats = resultObj
-    // newPsSchema.save().catch( err => console.log(err))
+     mongoose.connection.db.dropCollection('psshopstats', function(err, result) {});
+     const newPsSchema = new psSchema
+     newPsSchema.shopStats = resultObj
+     newPsSchema.save().catch( err => console.log(err))
 
 }))
 
