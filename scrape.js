@@ -1,4 +1,8 @@
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-extra')
+
+// Add stealth plugin and use defaults (all tricks to hide puppeteer usage)
+const StealthPlugin = require('puppeteer-extra-plugin-stealth')
+puppeteer.use(StealthPlugin())
 const schedule = require('node-schedule');
 const mongoose = require('mongoose')
 require("dotenv").config()
@@ -42,12 +46,12 @@ let scrapeEldo = async () => {
     const browser = await puppeteer.launch(chromeOptions);
     const page = await browser.newPage();
 
-    await page.setExtraHTTPHeaders({
-        'Accept-Language': 'en-US,en;q=0.9'
-    });
-    //await page.setUserAgent("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)");
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36');
-
+    // await page.setExtraHTTPHeaders({
+    //     'Accept-Language': 'en-US,en;q=0.9'
+    // });
+    // //await page.setUserAgent("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)");
+    // await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36');
+    // await page.setViewport({ width: 800, height: 600 })
     await page.goto(eldoDisc)
 
    //  await page.screenshot({path: 'example.png'});
