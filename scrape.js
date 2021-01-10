@@ -46,10 +46,10 @@ let scrapeEldo = async () => {
     const page = await browser.newPage();
 
     await page.setExtraHTTPHeaders({
-        'Accept-Language': 'en-US,en;q=0.9'
+        'Accept-Language': 'ru-RU,ru;q=0.9'
     });
     // //await page.setUserAgent("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)");
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36');
+    await page.setUserAgent('Mozilla/5.0 (Linux; arm; Android 9; JAT-LX1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 YaBrowser/20.4.4.76.00 SA/1 Mobile Safari/537.36');
     await page.setViewport({ width: 800, height: 600 })
     await page.goto('http://www.eldorado.ru')
    // click по выбору региона
