@@ -51,7 +51,7 @@ let scrapeEldo = async () => {
     // //await page.setUserAgent("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)");
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36');
     await page.setViewport({ width: 800, height: 600 })
-    await page.goto('https://www.eldorado.ru')
+    await page.goto('http://www.eldorado.ru')
    // click по выбору региона
     await page.waitForSelector("#__next > div > header > div.sc-14qfeqq-0.bNgeeI > div > div.h8xlw5-0.cddYaE > a > span.h8xlw5-3.kLXpZr").then(() => {
         console.log('city name found')
