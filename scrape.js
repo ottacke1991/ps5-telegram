@@ -24,7 +24,7 @@ mongoose
 
 
 const chromeOptions = {
-    headless: true,
+    headless: false,
     //defaultViewport: null,
     args: [
         "--disable-notifications",
@@ -37,6 +37,7 @@ const chromeOptions = {
         '--disable-setuid-sandbox',
        // "--single-process",
         "--no-zygote",
+        '--disable-web-security', '--disable-features=IsolateOrigins,site-per-process'
     ],
 };
 
@@ -60,20 +61,21 @@ let scrapeEldo = async () => {
     await page.setExtraHTTPHeaders({
         'Accept-Language': 'ru-RU,ru;q=0.9'
     });
-    await page.setUserAgent('Mozilla/5.0 (Linux; arm; Android 9; JAT-LX1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 YaBrowser/20.4.4.76.00 SA/1 Mobile Safari/537.36');
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 YaBrowser/20.7.1.70 Yowser/2.5 Yptp/1.23 Safari/537.36');
    // await page.setViewport({ width: 800, height: 600 })
-    await page.goto(eldoDisc);
+    await page.goto(eldoDisc, {'timeout': 100000, 'waitUntil':'load'})
    // click по выбору региона
-    await page.waitForSelector("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span").then(() => {
+    await page.waitForSelector("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span", {'timeout': 100000, 'waitUntil':'load'}).then(() => {
         console.log('city name found')
     })
 
     await page.click("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span")
     // //выбор самара
-    await page.waitForSelector("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(7)")
-    await page.click("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(7)")
+    // await page.waitForSelector("iframe");
+    await page.waitForSelector("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(6)").then(() => console.log('got it'));
+    await page.click("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(6)")
     // //Ждем загрузку имени региона для добавления в обьект
-    await page.waitForSelector('body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span')
+    await page.waitForSelector('body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span').then(() => console.log('got it'));
 
     // Код для скрапинга
     const result = await page.evaluate(async (page) => {
@@ -85,7 +87,7 @@ let scrapeEldo = async () => {
 
         newCheckObj.shop = 'Эльдорадо'
         newCheckObj.city = city
-        newCheckObj.psVersion = 'true'
+        newCheckObj.psVersion = true
 
         if (addToBasket) {
             newCheckObj.available  = true
@@ -109,27 +111,35 @@ let scrapeEldo = async () => {
 
 let scrapeEldoDE = async () => {
     const moment = require('moment');
-
     // Включаем Puppeteer
     const browser = await puppeteer.launch(chromeOptions);
+
     const page = await browser.newPage();
-
-
-    await page.goto(eldoDE);
+    await page.authenticate({
+        username: 'MxWwwE',
+        password: 'yQv9EQ',
+    });
+    await page.setExtraHTTPHeaders({
+        'Accept-Language': 'ru-RU,ru;q=0.9'
+    });
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 YaBrowser/20.7.1.70 Yowser/2.5 Yptp/1.23 Safari/537.36');
+    // await page.setViewport({ width: 800, height: 600 })
+    await page.goto(eldoDE, {'timeout': 100000, 'waitUntil':'load'})
     // click по выбору региона
-    await page.waitForSelector("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span").then(() => {
+    await page.waitForSelector("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span", {'timeout': 100000, 'waitUntil':'load'}).then(() => {
         console.log('city name found')
     })
+
     await page.click("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span")
     // //выбор самара
-    await page.waitForSelector("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(7)")
-    await page.click("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(7)")
+    // await page.waitForSelector("iframe");
+    await page.waitForSelector("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(6)").then(() => console.log('got it'));
+    await page.click("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(6)")
     // //Ждем загрузку имени региона для добавления в обьект
-    await page.waitForSelector('body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span')
+    await page.waitForSelector('body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span').then(() => console.log('got it'));
 
-
-    // Код для скраппинга
-    const result = await page.evaluate(async () => {
+    // Код для скрапинга
+    const result = await page.evaluate(async (page) => {
         let newCheckObj = {}
 
         let addToBasket = document.querySelector('.gtmAddToBasket')
@@ -138,7 +148,7 @@ let scrapeEldoDE = async () => {
 
         newCheckObj.shop = 'Эльдорадо'
         newCheckObj.city = city
-        newCheckObj.psVersion = 'false'
+        newCheckObj.psVersion = true
 
         if (addToBasket) {
             newCheckObj.available  = true
@@ -154,11 +164,13 @@ let scrapeEldoDE = async () => {
     result.curDate = moment().format('MMMM Do YYYY, h:mm:ss a')
     await browser.close();
 
+    // Работа с бд
+
 
     return result
 };
 
-schedule.scheduleJob("*/5 * * * *",(async function () {
+schedule.scheduleJob("*/12 * * * *",(async function () {
     const psSchema = require('./schemas/psSchema')
 
     let resultObj ={}
@@ -169,9 +181,9 @@ schedule.scheduleJob("*/5 * * * *",(async function () {
     // await scrapePika().then((value) => {
     //     resultObj.eldoDisc =value
     // })
-    // await scrapeEldoDE().then((value) => {
-    //     resultObj.eldoDE =value
-    // })
+    await scrapeEldoDE().then((value) => {
+        resultObj.eldoDE =value
+    })
 
      mongoose.connection.db.dropCollection('psshopstats', function(err, result) {});
      const newPsSchema = new psSchema
