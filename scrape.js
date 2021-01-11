@@ -43,11 +43,6 @@ const chromeOptions = {
 
 
 
-
-
-
-
-
 let scrapeEldo = async () => {
     const moment = require('moment');
     // Включаем Puppeteer
@@ -100,7 +95,7 @@ let scrapeEldo = async () => {
 
 
 
-    result.curDate = moment().format('MMMM Do YYYY, h:mm:ss a')
+    result.curDate = moment().tz("Europe/Moscow").format('MMMM Do YYYY, h:mm:ss a')
     await browser.close();
 
     // Работа с бд
@@ -148,7 +143,7 @@ let scrapeEldoDE = async () => {
 
         newCheckObj.shop = 'Эльдорадо'
         newCheckObj.city = city
-        newCheckObj.psVersion = true
+        newCheckObj.psVersion = false
 
         if (addToBasket) {
             newCheckObj.available  = true
@@ -161,7 +156,7 @@ let scrapeEldoDE = async () => {
 
 
 
-    result.curDate = moment().format('MMMM Do YYYY, h:mm:ss a')
+    result.curDate = moment().tz("Europe/Moscow").format('MMMM Do YYYY, h:mm:ss a')
     await browser.close();
 
     // Работа с бд
@@ -189,6 +184,7 @@ schedule.scheduleJob("*/12 * * * *",(async function () {
      const newPsSchema = new psSchema
      newPsSchema.shopStats = resultObj
      newPsSchema.save().catch( err => console.log(err))
+    console.log('pushed to MongoDB')
 
 }))
 

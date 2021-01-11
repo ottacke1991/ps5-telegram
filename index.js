@@ -13,7 +13,7 @@ mongoose
     .catch( err => console.log(err))
 
 const bot = new Telegraf(token)
-
+console.log('bot created')
 bot.use(async (ctx, next) => {
     const start = new Date()
     await next()
@@ -23,7 +23,8 @@ bot.use(async (ctx, next) => {
 })
 
 bot.hears('проверь ps5', async (ctx) => {
-   // router.get('/psshopstats', function (req, res) {
+    console.log('can talk')
+
     try {
         const objectFromDb = await psSchema.findOne().lean()
         await ctx.replyWithMarkdown(
