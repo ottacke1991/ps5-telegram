@@ -24,7 +24,7 @@ mongoose
 
 
 const chromeOptions = {
-    headless: false,
+    headless: true,
     //defaultViewport: null,
     args: [
         "--disable-notifications",
