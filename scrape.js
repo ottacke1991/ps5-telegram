@@ -166,7 +166,7 @@ let scrapeEldoDE = async () => {
     return result
 };
 
-schedule.scheduleJob("*/15 * * * *",(async function () {
+schedule.scheduleJob("*/10 * * * *",(async function () {
     const psSchema = require('./schemas/psSchema')
 
     let resultObj ={}
