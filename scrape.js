@@ -65,6 +65,7 @@ let scrapeEldo = async () => {
     })
 
     await page.click("body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span")
+
     // //выбор самара
     // await page.waitForSelector("iframe");
     await page.waitForSelector("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(6)").then(() => console.log('got it'));
@@ -165,7 +166,7 @@ let scrapeEldoDE = async () => {
     return result
 };
 
-schedule.scheduleJob("*/3 * * * *",(async function () {
+schedule.scheduleJob("*/15 * * * *",(async function () {
     const psSchema = require('./schemas/psSchema')
 
     let resultObj ={}
