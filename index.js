@@ -28,9 +28,9 @@ bot.hears('проверь ps5', async (ctx) => {
     try {
         const objectFromDb = await psSchema.findOne().lean()
         await ctx.replyWithMarkdown(
-            `*${objectFromDb.shopStats.eldoDisc.shop} ${objectFromDb.shopStats.eldoDisc.city}*\n`+"=================="+`\nДисковод: ${objectFromDb.shopStats.eldoDisc.psVersion ? 'Есть' : 'Нет'}\n`
+            `*${objectFromDb.shopStats.eldoDisc.shop} ${objectFromDb.shopStats.eldoDisc.city}*\n`+"=================="+`\n*Sony PlayStation 5 Blu-ray disc*\nДисковод: ${objectFromDb.shopStats.eldoDisc.psVersion ? 'Есть' : 'Нет'}\n`
             +`В наличии: ${objectFromDb.shopStats.eldoDisc.available ? 'Да' : 'Нет'}\nДата последней проверки:  ${objectFromDb.shopStats.eldoDisc.curDate}\n`+
-            "=================="+`\nДисковод: ${objectFromDb.shopStats.eldoDE.psVersion ? 'Есть' : 'Нет'}\n`
+            "=================="+`\n*Sony PlayStation 5 Digital Edition*\nДисковод: ${objectFromDb.shopStats.eldoDE.psVersion ? 'Есть' : 'Нет'}\n`
             +`В наличии: ${objectFromDb.shopStats.eldoDE.available ? 'Да' : 'Нет'}\nДата последней проверки:  ${objectFromDb.shopStats.eldoDE.curDate}`
 
 
