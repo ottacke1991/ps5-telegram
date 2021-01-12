@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer-extra')
-
+//OZON ADDED
 // Add stealth plugin and use defaults (all tricks to hide puppeteer usage)
 const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 puppeteer.use(StealthPlugin())
@@ -10,6 +10,7 @@ const port = process.env.PORT || 3131
 const mongoURI = process.env.MONGOURI
 const eldoDisc = process.env.ps5_eldo_disc
 const eldoDE = process.env.ps5_eldo_DE
+const ozon = process.env.ozon
 
 const express = require('express')
 const app = express()
@@ -41,7 +42,48 @@ const chromeOptions = {
     ],
 };
 
+let scrapeOzon = async () => {
+    const moment = require('moment');
+    let newCheckObj = {}
+    // Включаем Puppeteer
+    const browser = await puppeteer.launch(chromeOptions);
 
+    const page = await browser.newPage();
+    await page.authenticate({
+        username: 'MxWwwE',
+        password: 'yQv9EQ',
+    });
+    await page.setExtraHTTPHeaders({
+        'Accept-Language': 'ru-RU,ru;q=0.9'
+    });
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 YaBrowser/20.7.1.70 Yowser/2.5 Yptp/1.23 Safari/537.36');
+    // await page.setViewport({ width: 800, height: 600 })
+    await page.goto(ozon, {'timeout': 100000, 'waitUntil':'load'})
+
+
+    await page.waitForSelector("#__ozon > div > div.a4e4.undefined > div.container.b6e3 > div:nth-child(2) > div:nth-child(1) > aside > div:nth-child(3) > div.b7n1", {'timeout': 100000, 'waitUntil':'load'}).then(() => {
+        console.log('ozon price founnd')
+    })
+    newCheckObj.curDate = moment().tz("Europe/Moscow").format('MMMM Do YYYY, h:mm:ss a')
+    const found = (await page.content()).match(/Игровая консоль PlayStation 5, белый/gi)
+    if(found){
+        console.log('!!!!!found нашел консоль на озоне !!!!! ' + found)
+        newCheckObj.found = found
+        newCheckObj.foundStatus = true
+    } else {
+        newCheckObj.foundStatus = false
+        newCheckObj.found = 'Консоль не найдена'
+    }
+
+
+    // result.curDate = moment().tz("Europe/Moscow").format('MMMM Do YYYY, h:mm:ss a')
+    await browser.close();
+
+    // Работа с бд
+
+
+    return newCheckObj
+};
 
 let scrapeEldo = async () => {
     const moment = require('moment');
@@ -168,7 +210,7 @@ let scrapeEldoDE = async () => {
     return result
 };
 
-schedule.scheduleJob("*/10 * * * *",(async function () {
+schedule.scheduleJob("*/5 * * * *",(async function () {
     const psSchema = require('./schemas/psSchema')
 
     let resultObj ={}
@@ -176,12 +218,17 @@ schedule.scheduleJob("*/10 * * * *",(async function () {
         resultObj.eldoDisc =value
     })
 
-    // await scrapePika().then((value) => {
-    //     resultObj.eldoDisc =value
-    // })
+
     await scrapeEldoDE().then((value) => {
         resultObj.eldoDE =value
     })
+
+    await scrapeOzon().then((value) => {
+            resultObj.Ozon =value
+        })
+
+
+
 
      mongoose.connection.db.dropCollection('psshopstats', function(err, result) {});
      const newPsSchema = new psSchema
