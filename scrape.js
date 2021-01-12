@@ -87,6 +87,7 @@ let scrapeEldo = async () => {
 
         if (addToBasket) {
             newCheckObj.available  = true
+            console.log('!!!!! ВНИМАНИЕ ПРИСТАВКА !!!!!!')
         } else {
             newCheckObj.available  = false
         }
@@ -148,6 +149,7 @@ let scrapeEldoDE = async () => {
 
         if (addToBasket) {
             newCheckObj.available  = true
+            console.log('!!!!! ВНИМАНИЕ ПРИСТАВКА !!!!!!')
         } else {
             newCheckObj.available  = false
         }
