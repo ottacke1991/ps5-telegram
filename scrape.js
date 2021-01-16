@@ -258,6 +258,7 @@ schedule.scheduleJob("*/3 * * * *",(async function () {
         mvideoObj.city = "Самара"
         mvideoObj.available = true
         resultObj.mvideo = mvideoObj
+        mvideo = false
 
     } else {
         let mvideoObj= {}
