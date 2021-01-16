@@ -11,7 +11,7 @@ const mongoURI = process.env.MONGOURI
 const eldoDisc = process.env.ps5_eldo_disc
 const eldoDE = process.env.ps5_eldo_DE
 const ozon = process.env.ozon
-let mvideo = null
+let mvideo = false
 const express = require('express')
 const app = express()
 
