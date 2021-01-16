@@ -32,7 +32,7 @@ bot.use(async (ctx, next) => {
 schedule.scheduleJob("*/3 * * * *",(async function () {
     const objectFromDb = await psSchema.findOne().lean()
 
-    if(objectFromDb.shopStats.eldoDisc.available || objectFromDb.shopStats.eldoDE.available || objectFromDb.shopStats.Ozon.foundStatus){
+    if(objectFromDb.shopStats.eldoDisc.available || objectFromDb.shopStats.eldoDE.available || objectFromDb.shopStats.Ozon.foundStatus || objectFromDb.shopStats.mvideo.available){
         const userList = await dataService.loadUsers()
         console.log("STARTING NOTIFY USERS")
         userList.forEach(function (value) {
@@ -45,7 +45,10 @@ schedule.scheduleJob("*/3 * * * *",(async function () {
                 `Ozon: ${objectFromDb.shopStats.Ozon.foundStatus ? 'Нашли консоль ' : 'Консоль не найдена'}\n`+
                 `Ссылка на поиск Ozon [Ozon.ru](https://www.ozon.ru/category/igry-i-soft-13300/?from_global=true&text=playstation+5)\n`+
                 `Количество вариантов консоли на Ozon ${objectFromDb.shopStats.Ozon.foundStatus ? objectFromDb.shopStats.Ozon.found.length : '0' }\n`+
-                `Дата последней проверки: ${objectFromDb.shopStats.Ozon.curDate}\n`, Extra.markdown());
+                `Дата последней проверки: ${objectFromDb.shopStats.Ozon.curDate}\n` +
+                `==================\n` +
+                `*МВидео*\n` +
+                `В наличии: ${objectFromDb.shopStats.mvideo.available}`, Extra.markdown());
         })
     }
 }))

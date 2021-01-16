@@ -253,7 +253,18 @@ schedule.scheduleJob("*/3 * * * *",(async function () {
         })
 
 
+    if (mvideo){
+        let mvideoObj= {}
+        mvideoObj.city = "Самара"
+        mvideoObj.available = true
+        resultObj.mvideo = mvideoObj
 
+    } else {
+        let mvideoObj= {}
+        mvideoObj.city = "Самара"
+        mvideoObj.available = false
+        resultObj.mvideo = mvideoObj
+    }
 
      mongoose.connection.db.dropCollection('psshopstats', function(err, result) {});
      const newPsSchema = new psSchema
