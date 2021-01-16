@@ -25,7 +25,7 @@ mongoose
 
 
 const chromeOptions = {
-    headless: true,
+    headless: false,
     //defaultViewport: null,
     args: [
         "--disable-notifications",
@@ -116,13 +116,20 @@ let scrapeEldo = async () => {
     await page.waitForSelector("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(6)").then(() => console.log('got it'));
     await page.click("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(6)")
     // //Ждем загрузку имени региона для добавления в обьект
-    await page.waitForSelector('body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span').then(() => console.log('got it'));
+    let isAvalible = false
+    try {
+        await page.waitForSelector('#showcase > div > div.bottomBlockContentRight > div.buyBox.buyBoxCorners > div > div.priceContainerInner > div.gs-avail-sub.comparing_unit.top > a', { timeout: 50000 })
 
+    } catch (error) {
+        isAvalible = true
+    }
+
+    console.log(isAvalible + 'DOSTUPNA LI')
     // Код для скрапинга
     const result = await page.evaluate(async () => {
         let newCheckObj = {}
 
-        let addToBasket = document.querySelector('.gtmAddToBasket')
+
         let city = document.querySelector('.headerRegionName').innerText
 
 
@@ -130,9 +137,13 @@ let scrapeEldo = async () => {
         newCheckObj.city = city
         newCheckObj.psVersion = true
 
-        if (addToBasket) {
-            newCheckObj.available  = true
-            console.log('!!!!! ВНИМАНИЕ ПРИСТАВКА !!!!!!')
+        if (isAvalible) {
+            console.log('Судя по всему консолька в наличии')
+            let addToBasket = document.querySelector('.gtmAddToBasket')
+            if (addToBasket) {
+                newCheckObj.available = true
+                console.log('!!!!! ВНИМАНИЕ ПРИСТАВКА !!!!!!')
+            }
         } else {
             newCheckObj.available  = false
         }
@@ -179,22 +190,33 @@ let scrapeEldoDE = async () => {
     await page.click("body > div._54mt-Kv > div > div:nth-child(3) > div > div > span:nth-child(6)")
     // //Ждем загрузку имени региона для добавления в обьект
     await page.waitForSelector('body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span').then(() => console.log('got it'));
+    let isAvalible = false
+    try {
+        await page.waitForSelector('#showcase > div > div.bottomBlockContentRight > div.buyBox.buyBoxCorners > div > div.priceContainerInner > div.gs-avail-sub.comparing_unit.top > a', { timeout: 50000 })
+        console.log('проверяем отсутствие корзины')
+    } catch (error) {
+        isAvalible = true
+    }
 
+    console.log(isAvalible + 'DOSTUPNA LI')
     // Код для скрапинга
-    const result = await page.evaluate(async (page) => {
+    const result = await page.evaluate(async () => {
         let newCheckObj = {}
 
-        let addToBasket = document.querySelector('.gtmAddToBasket')
         let city = document.querySelector('.headerRegionName').innerText
 
 
         newCheckObj.shop = 'Эльдорадо'
         newCheckObj.city = city
-        newCheckObj.psVersion = false
+        newCheckObj.psVersion = true
 
-        if (addToBasket) {
-            newCheckObj.available  = true
-            console.log('!!!!! ВНИМАНИЕ ПРИСТАВКА !!!!!!')
+        if (isAvalible) {
+            console.log('Судя по всему консолька в наличии')
+            let addToBasket = document.querySelector('.gtmAddToBasket')
+            if (addToBasket) {
+                newCheckObj.available = true
+                console.log('!!!!! ВНИМАНИЕ ПРИСТАВКА !!!!!!')
+            }
         } else {
             newCheckObj.available  = false
         }
