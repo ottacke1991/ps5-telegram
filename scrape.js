@@ -126,7 +126,7 @@ let scrapeEldo = async () => {
 
     console.log(isAvalible + 'DOSTUPNA LI')
     // Код для скрапинга
-    const result = await page.evaluate(async () => {
+    const result = await page.evaluate(async (isAvalible) => {
         let newCheckObj = {}
 
 
@@ -200,7 +200,7 @@ let scrapeEldoDE = async () => {
 
     console.log(isAvalible + 'DOSTUPNA LI')
     // Код для скрапинга
-    const result = await page.evaluate(async () => {
+    const result = await page.evaluate(async (isAvalible) => {
         let newCheckObj = {}
 
         let city = document.querySelector('.headerRegionName').innerText
