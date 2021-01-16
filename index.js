@@ -34,6 +34,7 @@ schedule.scheduleJob("*/3 * * * *",(async function () {
 
     if(objectFromDb.shopStats.eldoDisc.available || objectFromDb.shopStats.eldoDE.available || objectFromDb.shopStats.Ozon.foundStatus){
         const userList = await dataService.loadUsers()
+        console.log("STARTING NOTIFY USERS")
         userList.forEach(function (value) {
 
             bot.telegram.sendMessage(value.uid, `*${objectFromDb.shopStats.eldoDisc.shop} ${objectFromDb.shopStats.eldoDisc.city}*\n`+"=================="+`\n*Sony PlayStation 5 Blu-ray disc*\nДисковод: ${objectFromDb.shopStats.eldoDisc.psVersion ? 'Есть' : 'Нет'}\n`
