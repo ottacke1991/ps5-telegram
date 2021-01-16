@@ -11,7 +11,7 @@ const mongoURI = process.env.MONGOURI
 const eldoDisc = process.env.ps5_eldo_disc
 const eldoDE = process.env.ps5_eldo_DE
 const ozon = process.env.ozon
-
+let mvideo = null
 const express = require('express')
 const app = express()
 
@@ -126,7 +126,7 @@ let scrapeEldo = async () => {
 
     console.log(isAvalible + 'DOSTUPNA LI')
     // Код для скрапинга
-    const result = await page.evaluate(async () => {
+    const result = await page.evaluate(async (isAvalible) => {
         let newCheckObj = {}
 
 
@@ -200,7 +200,7 @@ let scrapeEldoDE = async () => {
 
     console.log(isAvalible + 'DOSTUPNA LI')
     // Код для скрапинга
-    const result = await page.evaluate(async () => {
+    const result = await page.evaluate(async (isAvalible) => {
         let newCheckObj = {}
 
         let city = document.querySelector('.headerRegionName').innerText
@@ -263,6 +263,11 @@ schedule.scheduleJob("*/3 * * * *",(async function () {
 
 }))
 
+app.get("/mvideo", (req, res, next) => {
+    res.json(["gotcha!"]);
+    mvideo = true
+    console.log(mvideo +" mvideo ")
+});
 app.listen(port, () => console.log(`app listening on port ${port}!`))
 
 
