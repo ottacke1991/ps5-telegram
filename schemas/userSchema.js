@@ -3,7 +3,8 @@ const Schema = mongoose.Schema
 
 const newsSchema = new Schema(
     {
-        user: {type: Schema.Types.Mixed, required: true}
+        uid: {type: Schema.Types.Mixed, required: true},
+        userData: {type: Schema.Types.Mixed, required: true}
     }
 
 )

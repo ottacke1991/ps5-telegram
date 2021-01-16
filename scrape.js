@@ -91,13 +91,16 @@ let scrapeEldo = async () => {
     const browser = await puppeteer.launch(chromeOptions);
 
     const page = await browser.newPage();
+
     await page.authenticate({
         username: 'MxWwwE',
         password: 'yQv9EQ',
     });
+
     await page.setExtraHTTPHeaders({
         'Accept-Language': 'ru-RU,ru;q=0.9'
     });
+
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 YaBrowser/20.7.1.70 Yowser/2.5 Yptp/1.23 Safari/537.36');
    // await page.setViewport({ width: 800, height: 600 })
     await page.goto(eldoDisc, {'timeout': 100000, 'waitUntil':'load'})
@@ -116,7 +119,7 @@ let scrapeEldo = async () => {
     await page.waitForSelector('body > header > div.headerPanel.q-headerPanel.wish-list-item-visible > div > div.headerRegion.gg > a > span').then(() => console.log('got it'));
 
     // Код для скрапинга
-    const result = await page.evaluate(async (page) => {
+    const result = await page.evaluate(async () => {
         let newCheckObj = {}
 
         let addToBasket = document.querySelector('.gtmAddToBasket')
@@ -210,7 +213,7 @@ let scrapeEldoDE = async () => {
     return result
 };
 
-schedule.scheduleJob("*/5 * * * *",(async function () {
+schedule.scheduleJob("*/3 * * * *",(async function () {
     const psSchema = require('./schemas/psSchema')
 
     let resultObj ={}
