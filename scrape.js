@@ -14,6 +14,8 @@ const ozon = process.env.ozon
 let mvideo = false
 const express = require('express')
 const app = express()
+let http = require("http");
+
 
 mongoose
     .connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -242,6 +244,8 @@ schedule.scheduleJob("*/3 * * * *",(async function () {
     await scrapeEldo().then((value) => {
         resultObj.eldoDisc =value
     })
+    http.get("http://scrapper-ps5.herokuapp.com");
+
 
 
     await scrapeEldoDE().then((value) => {

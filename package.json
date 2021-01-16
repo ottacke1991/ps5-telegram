@@ -7,8 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "bot": "node index.js",
     "scrape": "node scrape.js",
-    "wakeUp": "node wakeUp.js",
-    "start": "concurrently \"npm run bot\" \"npm run scrape\" \"npm run wakeUp\""
+    "start": "concurrently \"npm run bot\" \"npm run scrape\""
   },
   "keywords": [],
   "author": "",
